@@ -666,31 +666,6 @@ class Worksheet(xmlwriter.XMLwriter):
         # Store the cell data in the worksheet data table.
         self.table[start_row][start_col] = cell_data_table_tuple(cell_range, row_input, col_input, cell_format)
 
-        # # Remove array formula braces and the leading =.
-        # if formula[0] == '{':
-        #     formula = formula[1:]
-        # if formula[0] == '=':
-        #     formula = formula[1:]
-        # if formula[-1] == '}':
-        #     formula = formula[:-1]
-
-        # # Write previous row if in in-line string optimization mode.
-        # if self.optimization and start_row > self.previous_row:
-        #     self._write_single_row(start_row)
-
-        # # Store the cell data in the worksheet data table.
-        # self.table[start_row][start_col] = cell_arformula_tuple(formula,
-        #                                                         cell_format,
-        #                                                         value,
-        #                                                         cell_range)
-
-        # # Pad out the rest of the area with formatted zeroes.
-        # if not self.optimization:
-        #     for row in range(start_row, end_row + 1):
-        #         for col in range(start_col, end_col + 1):
-        #             if row != start_row or col != start_col:
-        #                 self.write_number(row, col, 0, cell_format)
-
         return 0
 
     @convert_range_args
@@ -5341,6 +5316,20 @@ class Worksheet(xmlwriter.XMLwriter):
                     attributes.append(('t', 'str'))
 
             self._xml_formula_element(cell.formula, value, attributes)
+
+        elif type(cell).__name__ == 'DataTable':
+            #Add Additional Attributes
+            attributes.append(('t', 'dataTable'))
+            attributes.append(('ref', cell.ref))
+            attributes.append(('ca', '1'))
+            attributes.append(('dt2D', '1'))
+            attributes.append(('dtr', '1'))
+            attributes.append(('r1', cell.r1))
+            attributes.append(('r2', cell.r2))
+
+            self._xml_start_tag('c')
+            self._xml_empty_tag('f', attributes)
+            self._xml_end_tag('c')
 
         elif type(cell).__name__ == 'ArrayFormula':
             # Write a array formula.
