@@ -662,10 +662,14 @@ class Worksheet(xmlwriter.XMLwriter):
         else:
             cell_range = (xl_rowcol_to_cell(start_row, start_col) + ':'
                           + xl_rowcol_to_cell(end_row, end_col))
+        # Add formatting
+        if cell_format:
+            for r in range(start_row, end_row + 1):
+                for c in range(start_col, end_col + 1):
+                    self.write_blank(r, c, '', cell_format)
 
         # Store the cell data in the worksheet data table.
         self.table[start_row][start_col] = cell_data_table_tuple(cell_range, row_input, col_input, cell_format)
-
         return 0
 
     @convert_range_args
@@ -5319,6 +5323,7 @@ class Worksheet(xmlwriter.XMLwriter):
 
         elif type(cell).__name__ == 'DataTable':
             #Add Additional Attributes
+            cellAttributes = attributes[:]
             attributes.append(('t', 'dataTable'))
             attributes.append(('ref', cell.ref))
             attributes.append(('ca', '1'))
@@ -5327,7 +5332,7 @@ class Worksheet(xmlwriter.XMLwriter):
             attributes.append(('r1', cell.r1))
             attributes.append(('r2', cell.r2))
 
-            self._xml_start_tag('c')
+            self._xml_start_tag('c', cellAttributes)
             self._xml_empty_tag('f', attributes)
             self._xml_end_tag('c')
 

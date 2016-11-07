@@ -73,7 +73,7 @@ class TestAssembleWorksheet(unittest.TestCase):
                             <c r="A3">
                                 <v>100</v>
                             </c>
-                            <c>
+                            <c r="B3">
                                 <f r="B3" t="dataTable" ref="B3:C4" ca="1" dt2D="1" dtr="1" r1="A1" r2="B1"/>
                             </c>
                         </row>
