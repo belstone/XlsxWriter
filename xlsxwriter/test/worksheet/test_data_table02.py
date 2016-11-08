@@ -17,7 +17,7 @@ class TestAssembleWorksheet(unittest.TestCase):
 
     """
     def test_assemble_xml_file(self):
-        """Test writing a worksheet with conditional formatting."""
+        """Test writing a data table."""
         self.maxDiff = None
 
         fh = StringIO()

@@ -662,7 +662,7 @@ class Worksheet(xmlwriter.XMLwriter):
         else:
             cell_range = (xl_rowcol_to_cell(start_row, start_col) + ':'
                           + xl_rowcol_to_cell(end_row, end_col))
-        # Add formatting
+        # Add formatting whos values will be overwritten when adding table values
         if cell_format:
             for r in range(start_row, end_row + 1):
                 for c in range(start_col, end_col + 1):
